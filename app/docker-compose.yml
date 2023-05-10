@@ -6,7 +6,7 @@ services:
     ports:
       - 3000:3000
     working_dir: /app-frontend
-    # Os `healthcheck` devem garantir que a aplicaçãoo
+    # Os `healthcheck` devem garantir que a aplicação
     # está operacional, antes de liberar o container
     healthcheck:
       test: ["CMD", "lsof", "-t", "-i:3000"]  # Caso utilize outra porta interna para o front, altere ela aqui também
@@ -19,9 +19,9 @@ services:
       - 3001:3001
     working_dir: /app-backend
     # Caso queira que o container esteja atualizado durante o desenvolvimento, sem que você precise ficar fazendo down e up dos containers, descomente as 3 linhas abaixo
-    # command: dev 
-    # volumes: 
-    #   - ./backend/src:/app-backend/src
+    command: dev 
+    volumes: 
+      - ./backend/src:/app-backend/src
     depends_on:
       db:
         condition: service_healthy
