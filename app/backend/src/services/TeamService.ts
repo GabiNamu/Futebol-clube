@@ -11,6 +11,6 @@ export default class TeamService {
     if (!team) {
       throw new Error('Team not found');
     }
-    return team.toJSON();
+    return team;
   }
 }
