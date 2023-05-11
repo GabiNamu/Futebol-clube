@@ -6,7 +6,6 @@ export default class LoginService {
   public static async login(email: string, password: string)
     : Promise<string | { message: string }> {
     const userExist = await UserModel.findOne({ where: { email } });
-    console.log(userExist?.password);
     if (!userExist) {
       return { message: 'Invalid email or password' };
     }
