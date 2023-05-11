@@ -1,15 +1,21 @@
 import * as jwt from 'jsonwebtoken';
-import LoginInterface from '../interfaces/LoginInterface';
-// import { User } from '../interfaces/user.interface';
 
-function createTokenJWT(payload: LoginInterface) {
-  const secret: string = process.env.JWT_SECRET || 'secret';
-  const config: jwt.SignOptions = {
-    expiresIn: '3d',
-    algorithm: 'HS256',
-  };
-  const token = jwt.sign(payload, secret, config);
+type AppJwtPayload = {
+  email: string,
+  password: string
+};
+
+function sign(payload: AppJwtPayload): string {
+  const token = jwt.sign(payload, process.env.JWT_SECRET || 'SECRET');
   return token;
 }
 
-export default createTokenJWT;
+function verify(token: string): AppJwtPayload {
+  const decoded = jwt.verify(token, process.env.JWT_SECRET || 'SECRET');
+  return decoded as AppJwtPayload;
+}
+
+export default {
+  sign,
+  verify,
+};

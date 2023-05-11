@@ -1,5 +1,5 @@
 import { compareSync } from 'bcryptjs';
-import createTokenJWT from '../utils/jwtConfig';
+import jwtConfig from '../utils/jwtConfig';
 import UserModel from '../database/models/UserModel';
 
 export default class LoginService {
@@ -14,6 +14,14 @@ export default class LoginService {
     if (!unlock) {
       return { message: 'Invalid email or password' };
     }
-    return createTokenJWT({ email, password });
+    return jwtConfig.sign({ email, password });
+  }
+
+  public static async loginRole(email: string): Promise<string | { message: string }> {
+    const userExist = await UserModel.findOne({ where: { email } });
+    if (userExist) {
+      return userExist.role;
+    }
+    return { message: 'user not found' };
   }
 }
