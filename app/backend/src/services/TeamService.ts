@@ -6,10 +6,10 @@ export default class TeamService {
     return allTeams;
   }
 
-  public static async getById(id: number): Promise<TeamAtributes> {
+  public static async getById(id: number): Promise<TeamAtributes | string > {
     const team = await TeamModel.findOne({ where: { id } });
     if (!team) {
-      throw new Error('Team not found');
+      return 'Team not found!';
     }
     return team;
   }

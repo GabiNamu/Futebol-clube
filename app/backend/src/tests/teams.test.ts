@@ -41,6 +41,21 @@ describe('Teams Router', () => {
   });
     describe('GET /teams:id', () => {
       let chaiHttpResponse: Response;
+      it('Deve retornar 404 e uma mensagem de error', async () => {
+        sinon.stub(TeamModel, 'findOne').resolves(undefined)
+  
+        chaiHttpResponse = await chai.request(app)
+            .get('/teams/99');
+  
+          // assert => espero um resultado
+          expect(chaiHttpResponse.status).to.be.equal(404);
+          expect(chaiHttpResponse.body).to.be.deep.equal(
+            {
+              message: "Team not found!"
+            },
+          );
+      });
+
       it('Deve retornar 200 e o time', async () => {
         sinon.stub(TeamModel, 'findOne').resolves(
           {
