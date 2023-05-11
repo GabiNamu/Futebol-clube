@@ -1,17 +1,19 @@
 import * as express from 'express';
 import teamRouter from './routers/TeamRouter';
+import loginRouter from './routers/LoginRouter';
 
 class App {
   public app: express.Express;
 
-  constructor(private router = teamRouter) {
+  constructor(private team = teamRouter, private login = loginRouter) {
     this.app = express();
 
     this.config();
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
-    this.app.use('/teams', this.router);
+    this.app.use('/teams', this.team);
+    this.app.use('/login', this.login);
   }
 
   private config():void {
