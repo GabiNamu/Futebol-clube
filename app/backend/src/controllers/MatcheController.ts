@@ -30,6 +30,9 @@ export default class MatcheController {
 
   public static async create(req: Request, res: Response) {
     const newMatche = await MatcheService.create(req.body);
+    if (typeof newMatche === 'string') {
+      return res.status(newMatche.includes('id') ? 404 : 422).json({ message: newMatche });
+    }
     return res.status(201).json(newMatche);
   }
 }

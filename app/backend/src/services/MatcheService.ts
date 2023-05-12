@@ -1,6 +1,7 @@
 import Team from '../database/models/TeamModel';
 import MatcheModel, { MatcheAtributes } from '../database/models/MatcheModel';
 import MatcheCreateAtributes from '../interfaces/MatcheCreateAtributes';
+import TeamService from './TeamService';
 
 export default class MatcheService {
   public static async getAllInProgress(inProgress: string | undefined): Promise<MatcheAtributes[]> {
@@ -39,8 +40,25 @@ export default class MatcheService {
     return { message: 'updated' };
   }
 
-  public static async create(matche: MatcheCreateAtributes): Promise<MatcheAtributes> {
+  public static async create(matche: MatcheCreateAtributes): Promise<MatcheAtributes
+  | string > {
+    const validation = await this.validate(matche);
+    if (validation.message !== 'true') {
+      return validation.message;
+    }
     const newMatche = await MatcheModel.create({ ...matche, inProgress: true });
     return newMatche;
+  }
+
+  public static async validate(matche: MatcheCreateAtributes): Promise<{ message: string }> {
+    if (matche.homeTeamId === matche.awayTeamId) {
+      return { message: 'It is not possible to create a match with two equal teams' };
+    }
+    const homeTeam = await TeamService.getById(matche.homeTeamId);
+    const awayTeam = await TeamService.getById(matche.awayTeamId);
+    if (typeof homeTeam === 'string' || typeof awayTeam === 'string') {
+      return { message: 'There is no team with such id!' };
+    }
+    return { message: 'true' };
   }
 }
