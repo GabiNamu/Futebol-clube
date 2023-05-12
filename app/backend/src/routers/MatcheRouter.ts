@@ -9,5 +9,10 @@ matcheRouter.patch(
   (req, res, next) => authMiddleware(req, res, next),
   (req, res) => MatcheController.updateInProgress(req, res),
 );
+matcheRouter.patch(
+  '/:id',
+  (req, res, next) => authMiddleware(req, res, next),
+  (req, res) => MatcheController.updateGoals(req, res),
+);
 
 export default matcheRouter;
