@@ -1,5 +1,6 @@
 import Team from '../database/models/TeamModel';
 import MatcheModel, { MatcheAtributes } from '../database/models/MatcheModel';
+import MatcheCreateAtributes from '../interfaces/MatcheCreateAtributes';
 
 export default class MatcheService {
   public static async getAllInProgress(inProgress: string | undefined): Promise<MatcheAtributes[]> {
@@ -36,5 +37,10 @@ export default class MatcheService {
     homeTeamGoals: number, awayTeamGoals: number }): Promise<{ message: string }> {
     await MatcheModel.update(goals, { where: { id } });
     return { message: 'updated' };
+  }
+
+  public static async create(matche: MatcheCreateAtributes): Promise<MatcheAtributes> {
+    const newMatche = await MatcheModel.create({ ...matche, inProgress: true });
+    return newMatche;
   }
 }

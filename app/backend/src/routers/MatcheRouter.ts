@@ -14,5 +14,10 @@ matcheRouter.patch(
   (req, res, next) => authMiddleware(req, res, next),
   (req, res) => MatcheController.updateGoals(req, res),
 );
+matcheRouter.post(
+  '/',
+  (req, res, next) => authMiddleware(req, res, next),
+  (req, res) => MatcheController.create(req, res),
+);
 
 export default matcheRouter;

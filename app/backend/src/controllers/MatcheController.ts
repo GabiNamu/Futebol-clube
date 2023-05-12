@@ -27,4 +27,9 @@ export default class MatcheController {
     );
     return res.status(200).json(finished);
   }
+
+  public static async create(req: Request, res: Response) {
+    const newMatche = await MatcheService.create(req.body);
+    return res.status(201).json(newMatche);
+  }
 }
