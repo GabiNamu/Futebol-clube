@@ -11,4 +11,10 @@ export default class MatcheController {
     const matches = await MatcheService.getAll();
     return res.status(200).json(matches);
   }
+
+  public static async updateInProgress(req: Request, res: Response) {
+    const { id } = req.params;
+    const finished = await MatcheService.updateInProgress(Number(id));
+    return res.status(200).json(finished);
+  }
 }

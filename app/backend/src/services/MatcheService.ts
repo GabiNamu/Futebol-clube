@@ -26,4 +26,9 @@ export default class MatcheService {
         attributes: { exclude: ['id'] } }] });
     return allMatches;
   }
+
+  public static async updateInProgress(id: number): Promise<{ message: string }> {
+    await MatcheModel.update({ inProgress: false }, { where: { id } });
+    return { message: 'Finished' };
+  }
 }
