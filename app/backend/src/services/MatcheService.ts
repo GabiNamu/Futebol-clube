@@ -29,9 +29,22 @@ export default class MatcheService {
     return allMatches;
   }
 
-  public static async getById(id: number): Promise<MatcheAtributes[]> {
+  public static async getHomeTimeById(id: number): Promise<MatcheAtributes[]> {
     const allMatches = await MatcheModel.findAll({
       where: { homeTeamId: id, inProgress: false },
+      include: [{
+        model: Team,
+        as: 'homeTeam',
+        attributes: { exclude: ['id'] } }, {
+        model: Team,
+        as: 'awayTeam',
+        attributes: { exclude: ['id'] } }] });
+    return allMatches;
+  }
+
+  public static async getAwayTimeById(id: number): Promise<MatcheAtributes[]> {
+    const allMatches = await MatcheModel.findAll({
+      where: { awayTeamId: id, inProgress: false },
       include: [{
         model: Team,
         as: 'homeTeam',
