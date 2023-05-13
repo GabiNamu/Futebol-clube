@@ -1,4 +1,5 @@
 import { MatcheAtributes } from '../database/models/MatcheModel';
+import LeaderBoardInterface from '../interfaces/LeaderboardInterface';
 import MatcheService from './MatcheService';
 import TeamService from './TeamService';
 
@@ -23,6 +24,27 @@ export default class LeaderboardService {
         efficiency: this.getEfficiency(matches, value),
       };
     }));
+  }
+
+  public static async filterAndReduce(value: LeaderBoardInterface[]) {
+    const Teams = await TeamService.getAll();
+    const result = Teams.map((el) => {
+      const teamArray = value.filter((t) => t.name === el.teamName);
+      return { name: el.teamName,
+        totalPoints: teamArray[0].totalPoints + teamArray[1].totalPoints,
+        totalGames: teamArray[0].totalGames + teamArray[1].totalGames,
+        totalVictories: teamArray[0].totalVictories + teamArray[1].totalVictories,
+        totalDraws: teamArray[0].totalDraws + teamArray[1].totalDraws,
+        totalLosses: teamArray[0].totalLosses + teamArray[1].totalLosses,
+        goalsFavor: teamArray[0].goalsFavor + teamArray[1].goalsFavor,
+        goalsOwn: teamArray[0].goalsOwn + teamArray[1].goalsOwn,
+        goalsBalance: teamArray[0].goalsBalance + teamArray[1].goalsBalance,
+        efficiency: (((teamArray[0].totalPoints + teamArray[1].totalPoints)
+           / ((teamArray[0].totalGames + teamArray[1].totalGames) * 3)) * 100).toFixed(2),
+      };
+    });
+    const sortedResult = await this.sort(result);
+    return sortedResult;
   }
 
   public static getTotalHomePoints(matches: MatcheAtributes[]) {
@@ -125,8 +147,9 @@ export default class LeaderboardService {
     return result;
   }
 
-  public static async sort(someTeam: string) {
-    const m = await this.getAll(someTeam);
+  public static async sort(someTeam: string | LeaderBoardInterface[]) {
+    const m = typeof someTeam === 'string' ? await this.getAll(someTeam)
+      : someTeam;
     m.sort((b, a) => {
       if (a.totalPoints === b.totalPoints) {
         if (a.totalVictories === b.totalVictories) {
