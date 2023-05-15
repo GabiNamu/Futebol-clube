@@ -56,7 +56,8 @@ export default class MatcheService {
   }
 
   public static async updateInProgress(id: number): Promise<{ message: string }> {
-    await MatcheModel.update({ inProgress: false }, { where: { id } });
+    const a = await MatcheModel.update({ inProgress: false }, { where: { id } });
+    console.log(a);
     return { message: 'Finished' };
   }
 

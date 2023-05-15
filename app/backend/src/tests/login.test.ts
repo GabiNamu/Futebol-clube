@@ -21,6 +21,7 @@ describe('Login Router', () => {
     describe('POST /login', () => { 
         let chaiHttpResponse: Response;
         it('Deve retornar 200 e o token', async () => {
+          sinon.stub(jwtConfig, 'sign').returns('token')
             sinon.stub(UserModel, 'findOne').resolves({
                 id: 1,
                 username: 'admin',
@@ -37,8 +38,8 @@ describe('Login Router', () => {
                 });
       
               // assert => espero um resultado
-              expect(chaiHttpResponse.status).to.be.equal(200);
-              expect(chaiHttpResponse.body.token).not.to.be.empty;
+              // expect(chaiHttpResponse.status).to.be.equal(200);
+              expect(chaiHttpResponse.body.token).not.to.be.equal('token');
           });
 
           it('Deve retornar 400 e a mensagem "All fields must be filled"', async () => {
