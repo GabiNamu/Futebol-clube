@@ -69,11 +69,53 @@ const mockmatchesInProgress = {
   }
 } as MatchReturnAtributes;
 
+
+const mockmatchesLeaderboard = [{
+  "id": 1,
+  "homeTeamId": 1,
+  "homeTeamGoals": 5,
+  "awayTeamId": 8,
+  "awayTeamGoals": 1,
+  "inProgress": false,
+}];
+
+const mockmatchesLeaderboardAway = [{
+  "id": 1,
+  "homeTeamId": 8,
+  "homeTeamGoals": 5,
+  "awayTeamId": 1,
+  "awayTeamGoals": 1,
+  "inProgress": false,
+}];
+
+const teamMock = [ 
+  {
+    id: 1,
+    teamName: "Avaí/Kindermann"
+  },
+]
+
+// const mockleaderboard {
+//   "name": "Santos",
+//   "totalPoints": 9,
+//   "totalGames": 3,
+//   "totalVictories": 3,
+//   "totalDraws": 0,
+//   "totalLosses": 0,
+//   "goalsFavor": 9,
+//   "goalsOwn": 3,
+//   "goalsBalance": 6,
+//   "efficiency": "100.00"
+// }
+
 export default {
     mockmatches,
     mockmatchesInProgress,
     wrongMockmatches,
-    notExistMockmatches
+    notExistMockmatches,
+    teamMock,
+    mockmatchesLeaderboard,
+    mockmatchesLeaderboardAway
 }
 
 export {MatchReturnAtributes,}
